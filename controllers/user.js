@@ -45,8 +45,10 @@ exports.addUser = async (req, res) => {
         .save()
         .then(() => {
             console.log("User added! Check Compass!")
+            res.redirect(`/?status=success&message='All went well'`);
         })
         .catch(err => {
             console.error(err);
+            res.redirect(`/?status=alert&message=${err}`);
         })
 }

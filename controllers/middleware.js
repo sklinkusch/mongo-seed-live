@@ -23,9 +23,12 @@ exports.run = async () => {
     app.set('views', path.join(__dirname, '../views'));
 
     app.get('/', async (req, res) => {
+
+        const { message, status } = req.query;
+
         const users = await UserModel.find({}).exec({})
         // console.log(users);
-        res.render('home', { users, title: "Homepage" })
+        res.render('home', { status, message, users, title: "Homepage" })
     })
 
     app.get('/api/', async (req, res) => {
