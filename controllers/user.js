@@ -1,6 +1,7 @@
 const faker = require("faker");
+const UserModel = require("../models/user");
 
-exports.create = (amount = 5) =>
+exports.create = (amount = 5) => {
     new Array(amount).fill(0).map(() => ({
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
@@ -18,3 +19,34 @@ exports.create = (amount = 5) =>
         },
         phone_number: faker.phone.phoneNumber()
     }));
+}
+
+exports.addUser = async (req, res) => {
+    console.log(req.body.email);
+    const user = {
+        first_name: req.body.firstName,
+        last_name: req.body.lastName,
+        email: req.body.email,
+        age: req.body.age,
+        username: req.body.username,
+        short_bio: req.body.bio,
+        address: {
+            street: req.body.street,
+            street_number: req.body.number,
+            zip: req.body.zip,
+            city: req.body.city,
+            country: req.body.country,
+            state: req.body.state
+        },
+        phone_number: req.body.phone
+    };
+    // insert in the DB -> await
+    const newUser = await new UserModel(user)
+        .save()
+        .then(() => {
+            console.log("User added! Check Compass!")
+        })
+        .catch(err => {
+            console.error(err);
+        })
+}
