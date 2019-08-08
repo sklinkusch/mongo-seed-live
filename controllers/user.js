@@ -1,5 +1,9 @@
 const faker = require("faker");
 const UserModel = require("../models/user");
+/* validate also on updates 
+1. define opts
+2. pass opts to every update*/
+const opts = { runValidators: true };
 
 exports.create = (amount = 5) => {
     new Array(amount).fill(0).map(() => ({
@@ -45,7 +49,7 @@ exports.addUser = async (req, res) => {
 
     if (req.body.id) {
         console.log("Updating");
-        const updateUser = UserModel.updateOne({ _id: req.body.id }, { $set: user })
+        const updateUser = UserModel.updateOne({ _id: req.body.id }, { $set: user }, opts)
             .then(() => {
                 console.log("User updated! Check Compass!")
                 res.redirect(`/?status=success&message='User successfully updated'`);
