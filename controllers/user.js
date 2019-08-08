@@ -40,15 +40,32 @@ exports.addUser = async (req, res) => {
         },
         phone_number: req.body.phone
     };
+    console.log(user);
     // insert in the DB -> await
-    const newUser = await new UserModel(user)
-        .save()
-        .then(() => {
-            console.log("User added! Check Compass!")
-            res.redirect(`/?status=success&message='All went well'`);
-        })
-        .catch(err => {
-            console.error(err);
-            res.redirect(`/?status=alert&message=${err}`);
-        })
+
+    if (req.body.id) {
+        console.log("Updating");
+        const updateUser = UserModel.updateOne({ _id: req.body.id }, { $set: user })
+            .then(() => {
+                console.log("User updated! Check Compass!")
+                res.redirect(`/?status=success&message='User successfully updated'`);
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect(`/?status=alert&message=${err}`);
+            });
+    } else {
+        console.log("Adding a new user");
+        const newUser = await new UserModel(user)
+            .save()
+            .then(() => {
+                console.log("User added! Check Compass!")
+                res.redirect(`/?status=success&message='All went well'`);
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect(`/?status=alert&message=${err}`);
+            })
+    }
 }
+

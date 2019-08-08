@@ -61,6 +61,14 @@ exports.run = async () => {
 
     app.post('/users/add', User.addUser);
 
+    app.get('/users/edit/:userID', async (req, res) => {
+        const { userID } = req.params;
+        const user = await UserModel.findById(userID).exec({});
+        await res.render('add', { title: "Edit user", user, update: true });
+    });
+
+    app.post('/users/edit/:userID', User.addUser);
+
     console.log(`View user data on http://localhost:3000`);
     await app.listen(3000)
 }
