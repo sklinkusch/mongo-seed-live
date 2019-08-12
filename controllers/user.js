@@ -73,3 +73,16 @@ exports.addUser = async (req, res) => {
     }
 }
 
+exports.delete = async (req, res) => {
+    const user = await UserModel.findById(req.params.userID);
+    const deleteUser = await UserModel.deleteOne({ _id: req.params.userID })
+        .then(() => {
+            console.log('User successfully deleted!');
+            res.redirect(`/?status=success&message='User successfully deleted'`);
+        })
+        .catch(err => {
+            console.error(err);
+            res.redirect(`?status=alert&message=${err}`)
+        })
+}
+

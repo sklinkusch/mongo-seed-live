@@ -67,6 +67,8 @@ exports.run = async () => {
         await res.render('add', { title: "Edit user", user, update: true });
     });
 
+    app.get('user/del/:userID', User.delete);
+
     app.post('/users/edit/:userID', User.addUser);
 
     console.log(`View user data on http://localhost:3000`);
